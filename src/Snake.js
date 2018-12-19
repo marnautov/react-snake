@@ -1,12 +1,10 @@
 import React from 'react';
 
 
-
-class Hello extends React.Component {
+class Snake extends React.Component {
 
     constructor(props){
         super(props);
-
 
         // this.state = {
         //     matrix: [],
@@ -21,29 +19,15 @@ class Hello extends React.Component {
             posY:0,
             posX:0,
         };
-
-
    
         setTimeout(() => {
             this.restart();
         }, 100);
-        
-        
-
-        // this.food = [Math.floor(Math.random()*this.countY), Math.floor(Math.random()*this.countX)];
-        // matrix[this.food[0]][this.food[1]] = this.foodCell;
-
-
-        //this.start();
-
-        
-        
-        
 
     }
 
 
-    makeSpeed(){
+    changeSpeed(){
 
         if (this.intervalId){
             clearInterval(this.intervalId);
@@ -73,8 +57,6 @@ class Hello extends React.Component {
 
 
     }
-
-
 
 
     _handleKeyDown = (event) => {
@@ -159,7 +141,7 @@ class Hello extends React.Component {
         });
 
         this.makeFood();
-        this.makeSpeed();
+        this.changeSpeed();
 
     }
 
@@ -192,7 +174,7 @@ class Hello extends React.Component {
             matrix[clearPos[0]][clearPos[1]] = this.empty;
         }
 
-        if (this.moveNum%10==0){
+        if (this.moveNum%10 == 0){
             this.size--;
             if (this.size<1) this.size = 1;
 
@@ -202,7 +184,7 @@ class Hello extends React.Component {
         }
 
 
-        if (this.state.direction==1){
+        if (this.state.direction == 1){
             posY--;
         }
 
@@ -269,7 +251,7 @@ class Hello extends React.Component {
             this.lastFood=this.foodCell;
 
             this.makeFood();
-            this.makeSpeed();
+            this.changeSpeed();
         }
 
 
@@ -337,4 +319,4 @@ class Hello extends React.Component {
 }
 
 
-export default Hello;
+export default Snake;
