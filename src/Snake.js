@@ -125,12 +125,17 @@ class Snake extends React.Component {
 
         this.mem = [];
 
-        for (var y=0;y<this.countY;y++){
-            matrix[y] = [];
-            for (var x=0;x<this.countX;x++){
-                matrix[y][x] = this.empty;
-            }
+        matrix = new Array(this.countY);
+        for(var i=0;i<matrix.length;i++){
+            matrix[i]=new Array(this.countX).fill(this.empty);
         }
+
+        // for (var y=0;y<this.countY;y++){
+        //     matrix[y] = [];
+        //     for (var x=0;x<this.countX;x++){
+        //         matrix[y][x] = this.empty;
+        //     }
+        // }
 
   
         this.setState({
@@ -179,7 +184,7 @@ class Snake extends React.Component {
             if (this.size<1) this.size = 1;
 
             var clearPos = this.mem[this.mem.length-this.size];
-            console.log(clearPos);
+            //console.log(clearPos);
             if (typeof clearPos != 'undefined') matrix[clearPos[0]][clearPos[1]] = this.empty;
         }
 
@@ -288,7 +293,7 @@ class Snake extends React.Component {
 
         this.state.matrix.forEach((itemY, y)=>{
             //console.log(itemY);
-            blocks.push(<br/>);
+            blocks.push(<br key={y}/>);
             itemY.forEach((itemX, x)=>{
                 //console.log(itemX);
                 var color = 'black'
