@@ -26,7 +26,6 @@ class Snake extends React.Component {
 
         this.restart();
 
-
     }
 
 
@@ -57,6 +56,12 @@ class Snake extends React.Component {
 
         this.mem = [];
 
+
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+
+
         matrix = new Array(this.countY);
         for (var i = 0; i < matrix.length; i++) {
             matrix[i] = new Array(this.countX).fill(this.empty);
@@ -81,11 +86,22 @@ class Snake extends React.Component {
             this.changeSpeed();
         });
 
+    }
 
 
 
+    stopGame(){
+
+
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+
+        // игра окончена
+        this.props.history.push('/dashboard'); 
 
     }
+
 
 
 
@@ -233,20 +249,25 @@ class Snake extends React.Component {
         if (posY < 0) posY = this.countY - 1;
         if (posX < 0) posX = this.countX - 1;
 
+
+        // проверяем на аварию
+        for (let index = 0; index < this.mem.length - 1; index++) {
+            const element = this.mem[index];
+            if (element[0] == posY && element[1] == posX) {
+
+                this.stopGame();
+            
+                return false;
+            }
+        }
+
+
         matrix[posY][posX] = this.full;
 
         this.mem.push([posY, posX]);
         //console.log(this.mem);
 
 
-        for (let index = 0; index < this.mem.length - 1; index++) {
-            const element = this.mem[index];
-            if (element[0] == posY && element[1] == posX) {
-                alert('Игра окончена!');
-                this.restart();
-                return false;
-            }
-        }
 
 
 
