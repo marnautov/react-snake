@@ -11,14 +11,21 @@ class Snake extends React.Component {
             direction: 2,
             posY: 0,
             posX: 0,
+            messageText: '',
         };
 
 
         //this.restart();
 
-        setTimeout(() => {
-            this.restart();
-        }, 100);
+
+
+    }
+
+
+    componentDidMount() {
+
+        this.restart();
+
 
     }
 
@@ -62,16 +69,21 @@ class Snake extends React.Component {
         //     }
         // }
 
+        console.log('matrix1:', matrix);
 
         this.setState({
             matrix: matrix,
             direction: 2,
             posY: 0,
             posX: 0,
+        }, () => {
+            this.makeFood();
+            this.changeSpeed();
         });
 
-        this.makeFood();
-        this.changeSpeed();
+
+
+
 
     }
 
@@ -99,6 +111,9 @@ class Snake extends React.Component {
         this.foodCell = Math.floor(Math.random() * 9);
 
         this.food = [Math.floor(Math.random() * this.countY), Math.floor(Math.random() * this.countX)];
+
+        console.log('matrix', matrix);
+
         matrix[this.food[0]][this.food[1]] = this.foodCell;
 
         this.setState({
@@ -193,21 +208,24 @@ class Snake extends React.Component {
         }
 
 
-        if (this.state.direction == 1) {
-            posY--;
+        switch (this.state.direction) {
+            case 1:
+                posY--;
+                break;
+            case 2:
+                posX++;
+                break;
+            case 3:
+                posY++;
+                break;
+            case 4:
+                posX--;
+                break;
+
+            default:
+                break;
         }
 
-        if (this.state.direction == 2) {
-            posX++;
-        }
-
-        if (this.state.direction == 3) {
-            posY++;
-        }
-
-        if (this.state.direction == 4) {
-            posX--;
-        }
 
         if (posY > this.countY - 1) posY = 0;
         if (posX > this.countX - 1) posX = 0;
@@ -283,9 +301,14 @@ class Snake extends React.Component {
 
         if (this.lastMessageId) clearInterval(this.lastMessageId);
 
-        this.messageText = message;
+        this.setState({
+            messageText: message
+        });
+
         this.lastMessageId = setTimeout(() => {
-            this.messageText = '-';
+            this.setState({
+                messageText: '-'
+            });
         }, 3000);
 
     }
@@ -314,7 +337,7 @@ class Snake extends React.Component {
 
         return (
             <div>
-                {this.messageText}
+                {this.state.messageText}
                 <div>
                     Speed: <b>{this.speed}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   Size: <b>{this.size}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Max: <b>{this.maxSize}</b>
                 </div>
