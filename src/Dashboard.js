@@ -7,11 +7,6 @@ export default class DashBoard extends Component {
     state = {
         name: '',
         rating: [
-            {name:'Maxim', score:'200'},
-            {name:'Maxim1', score:'150'},
-            {name:'Maxim2', score:'100'},
-            {name:'Maxim3', score:'50'},
-            {name:'Maxim4', score:'30'},
         ]
     }
 
@@ -21,9 +16,11 @@ export default class DashBoard extends Component {
 
         super(props);
 
+
         this.loadRating();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
 
@@ -32,21 +29,33 @@ export default class DashBoard extends Component {
     }
 
 
+    handleSubmit(event) {
+
+
+        let name = this.state.name;
+        let score = this.props.history.location.state.score;
+
+        fetch('https://amserver.ru/snake.php?action=add-score&name='+name+'&score='+score).then((response)=>{
+            return response.json();
+        }).then(json=>{
+            console.log('json add-score',json);
+            this.loadRating();
+        });
+
+    }
+
+
     loadRating(){
 
 
-        let rating = [
-            {name:'Maxim', score:'200'},
-            {name:'Maxim1', score:'150'},
-            {name:'Maxim2', score:'100'},
-            {name:'Maxim3', score:'50'},
-            {name:'Maxim4', score:'30'},
-        ];
-
-
-        this.setState({
-            rating
-        });
+        fetch('https://amserver.ru/snake.php?action=score-list').then((response)=>{
+            return response.json();
+        }).then(json=>{
+            console.log('json',json);
+            this.setState({
+                rating: json
+            });
+        })
 
 
     }
@@ -68,7 +77,8 @@ export default class DashBoard extends Component {
 
         return (
             <div>
-                Hello DashBoard
+                Игра окончена,<br/>
+                ваш рейтинг <b>{this.props.history.location.state.score}</b>, введите имя чтобы сохранить результат!
 
                 <div>
                     <ul>
@@ -81,7 +91,7 @@ export default class DashBoard extends Component {
                 </div>
 
                 <div>
-                    <input type="submit" value="Save"></input>
+                    <input onClick={this.handleSubmit} type="submit" value="Save"></input>
                 </div>
 
                 <div>

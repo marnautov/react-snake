@@ -98,7 +98,7 @@ class Snake extends React.Component {
         }
 
         // игра окончена
-        this.props.history.push('/dashboard'); 
+        this.props.history.push('/dashboard',{score:this.maxSize}); 
 
     }
 
